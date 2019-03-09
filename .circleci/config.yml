@@ -1,10 +1,14 @@
 version: 2.1
+
+orbs:
+  pulumi: pulumi/pulumi@1.0.0
+
 workflows:
   build_test_deploy:
     jobs:
       - build_test
-      - deploy:
-          requires:
+      - build_push_image
+          requires
             - build_test
 jobs:
   build_test:
@@ -19,7 +23,7 @@ jobs:
       - run:
           name: Run Tests
           command: ~/.local/bin/pytest
-  deploy:
+  build_push_image:
     docker:
       - image: circleci/python:3.7.2
     steps:
