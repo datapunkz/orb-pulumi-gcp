@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -19,11 +20,9 @@ lib64/
 parts/
 sdist/
 var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -43,9 +42,8 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
-*.cover
+*,cover
 .hypothesis/
-.pytest_cache/
 
 # Translations
 *.mo
@@ -54,7 +52,6 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
-db.sqlite3
 
 # Flask stuff:
 instance/
@@ -69,7 +66,7 @@ docs/_build/
 # PyBuilder
 target/
 
-# Jupyter Notebook
+# IPython Notebook
 .ipynb_checkpoints
 
 # pyenv
@@ -78,27 +75,71 @@ target/
 # celery beat schedule file
 celerybeat-schedule
 
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# dotenv
 .env
-.venv
-env/
+
+# virtualenv
 venv/
 ENV/
-env.bak/
-venv.bak/
 
 # Spyder project settings
 .spyderproject
-.spyproject
 
 # Rope project settings
 .ropeproject
 
-# mkdocs documentation
-/site
+.vscode
+config.json
+.idea
 
-# mypy
-.mypy_cache/
+#Security/Credentials Ignores
+cicd_demo_gcp_creds.json
+
+#Terraform Ignore file
+*.dll
+*.exe
+.DS_Store
+example.tf
+terraform.tfplan
+terraform.tfstate
+bin/
+modules-dev/
+/pkg/
+website/.vagrant
+website/.bundle
+website/build
+website/node_modules
+.vagrant/
+*.backup
+./*.tfstate
+.terraform/
+*.log
+*.bak
+*~
+.*.swp
+.idea
+*.iml
+*.test
+*.iml
+plan.txt
+website/vendor
+namecheap.tf
+
+# Test exclusions
+!command/test-fixtures/**/*.tfstate
+!command/test-fixtures/**/.terraform/
+
+#Pulumi ignores
+/.pulumi/
+/.vscode/
+bin/
+node_modules/
+*.pyc
+.Python
+include/
+lib/
+yarn.lock
+package-lock.json
+Pulumi.*.yaml
+.idea/
+*.iml

@@ -1,0 +1,5 @@
+flask
+pyinstaller
+pytest
+pulumi
+pulumi-gcp
