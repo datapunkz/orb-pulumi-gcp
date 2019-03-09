@@ -8,7 +8,7 @@ workflows:
     jobs:
       - build_test
       - build_push_image
-          requires
+          requires:
             - build_test
 jobs:
   build_test:
