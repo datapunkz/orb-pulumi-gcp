@@ -7,13 +7,13 @@ workflows:
   build_test_deploy:
     jobs:
       - build_test
-      # - build_push_image:
-      #     requires:
-      #       - build_test
-      - deploy_to_gcp:
+      - build_push_image:
           requires:
-          #   - build_push_image
-          - build_test
+            - build_test
+      # - deploy_to_gcp:
+      #     requires:
+      #     #   - build_push_image
+      #     - build_test
 jobs:
   build_test:
     docker:
@@ -25,14 +25,11 @@ jobs:
       - run:
           name: Install Python Dependencies
           command: |
-            # sudo pip install --upgrade pip==18
             pipenv install
       - run:
           name: Run Tests
           command: |
             pipenv run pytest
-            # ~/.local/bin/pytest
-            # pytest
   build_push_image:
     docker:
       - image: circleci/python:3.7.2
@@ -43,15 +40,14 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |       
-            pip install --user --no-cache-dir -r requirements.txt          
-            ~/.local/bin/pyinstaller -F hello_world.py
+            pipenv install
+            pipenv run pyinstaller -F hello_world.py
             echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
             echo 'export IMAGE_NAME=python-cicd-workshop' >> $BASH_ENV
             source $BASH_ENV
             docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push $DOCKER_LOGIN/$IMAGE_NAME
-
   deploy_to_gcp:
     docker:
       - image: circleci/python:3.7.2
