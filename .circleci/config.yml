@@ -45,14 +45,15 @@ jobs:
       - run:
           name: Generate GCP Credentials
           command: |
-            pipenv install
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/orb-demo/cicd_demo_gcp_creds.json
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
+     - run:
+          name: Install dependecies 
+          command: pipenv install pulumi pulumi-gcp         
       - pulumi/update:
           stack: dev
           working_directory: ${HOME}/project/pulumi/gcp/orb-demo/
-
 workflows:
   build_test_deploy:
     jobs:
@@ -63,4 +64,4 @@ workflows:
       - deploy_to_gcp:
           requires:
           # - build_push_image
-          - build_test #kill this line once the deploy issue is fixed
+          - build_test # kill this line once the deploy issue is fixed
