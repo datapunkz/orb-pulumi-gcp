@@ -4,12 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
-pyinstaller = "*"
 pulumi = "*"
 pulumi-gcp = "*"
+flask = "*"
+pyinstaller = "*"
 
 [dev-packages]
 pytest = "*"
-
-

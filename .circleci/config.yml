@@ -28,8 +28,7 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            pipenv shell
-            sleep 10s   
+            pipenv run pytest
             # ~/.local/bin/pytest
             # pytest
   build_push_image:
@@ -62,7 +61,6 @@ jobs:
             # cd ${HOME}/project/pulumi/gcp/orb-demo/
             # sudo pip install --upgrade pip==18
             pipenv install
-            pipenv shell
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/orb-demo/cicd_demo_gcp_creds.json
             curl -L https://get.pulumi.com/ | bash -s
             source ~/.bashrc
