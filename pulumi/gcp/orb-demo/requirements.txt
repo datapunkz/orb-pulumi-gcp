@@ -1,2 +1,2 @@
-pulumi_gcp
+pulumi
 pulumi_gcp
