@@ -24,10 +24,12 @@ jobs:
           name: Install Python Dependencies
           command: |
             sudo pip install --upgrade pip==18
-            pip install --user --no-cache-dir -r requirements.txt
+            pipenv install
       - run:
           name: Run Tests
-          command: ~/.local/bin/pytest
+          command: |
+            pipenv shell    
+            ~/.local/bin/pytest
   build_push_image:
     docker:
       - image: circleci/python:3.7.2
@@ -57,7 +59,8 @@ jobs:
           command: |
             # cd ${HOME}/project/pulumi/gcp/orb-demo/
             sudo pip install --upgrade pip==18
-            pip install --user -r requirements.txt
+            pipenv install
+            pipenv shell
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/orb-demo/cicd_demo_gcp_creds.json
             curl -L https://get.pulumi.com/ | bash -s
             source ~/.bashrc
