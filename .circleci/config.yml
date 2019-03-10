@@ -28,7 +28,8 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            pipenv shell    
+            pipenv shell
+            sleep 10s   
             # ~/.local/bin/pytest
             # pytest
   build_push_image:
