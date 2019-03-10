@@ -55,8 +55,7 @@ jobs:
           command: |
             cd ${HOME}/project/pulumi/gcp/orb-demo/
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > cicd-gcp-creds.json
-            pip install --user --no-cache-dir -r requirements.txt
-            export pulumi=~/.local/bin/pulumi
+            curl -L https://get.pulumi.com/ | bash -s
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - pulumi/update:
