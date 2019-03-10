@@ -18,6 +18,8 @@ jobs:
   build_test:
     docker:
       - image: circleci/python:3.7.2
+        environment:
+          PIPENV_VENV_IN_PROJECT: 'true'
     steps:
       - checkout
       - run:
