@@ -23,6 +23,7 @@ jobs:
       - run:
           name: Install Python Dependencies
           command: |
+            sudo pip install --upgrade pip==9.0
             pip install --user --no-cache-dir -r requirements.txt
       - run:
           name: Run Tests
