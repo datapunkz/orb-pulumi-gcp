@@ -140,6 +140,6 @@ include/
 lib/
 yarn.lock
 package-lock.json
-Pulumi.*.yaml
+# Pulumi.*.yaml
 .idea/
 *.iml
