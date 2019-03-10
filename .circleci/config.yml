@@ -47,7 +47,7 @@ jobs:
 
   deploy_to_gcp:
     docker:
-      - image: python:3.7.2
+      - image: circleci/python:3.7.2
     steps:
       - checkout
       - run:
@@ -55,8 +55,9 @@ jobs:
           command: |
             cd ${HOME}/project/pulumi/gcp/orb-demo/
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > cicd-gcp-creds.json
-            curl -L https://get.pulumi.com/ | bash -s
+            # curl -L https://get.pulumi.com/ | bash -s
             source ~/.bashrc
+            sudo pip install --upgrade pip==18.0
             pip3 install --user --no-cache-dir -r requirements.txt
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
