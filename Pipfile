@@ -8,6 +8,4 @@ pulumi = "*"
 pulumi-gcp = "*"
 flask = "*"
 pyinstaller = "*"
-
-[dev-packages]
 pytest = "*"
