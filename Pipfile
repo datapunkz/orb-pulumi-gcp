@@ -9,3 +9,6 @@ pyinstaller = "*"
 pytest = "*"
 pulumi = "*"
 pulumi-gcp = "*"
+
+[dev-packages]
+pylint = "*"
