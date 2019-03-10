@@ -64,8 +64,8 @@ jobs:
             # sudo pip install --upgrade pip==18
             pipenv install
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/orb-demo/cicd_demo_gcp_creds.json
-            curl -L https://get.pulumi.com/ | bash -s
-            source ~/.bashrc
+            # curl -L https://get.pulumi.com/ | bash -s
+            # source ~/.bashrc
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - pulumi/update:
