@@ -47,7 +47,7 @@ jobs:
 
   deploy_to_gcp:
     docker:
-      - image: circleci/python:3.7.2
+      - image: python:3.7.2
     steps:
       - checkout
       - run:
