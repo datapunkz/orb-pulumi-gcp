@@ -7,12 +7,12 @@ workflows:
   build_test_deploy:
     jobs:
       - build_test
-      - build_push_image:
-          requires:
-            - build_test
-      - deploy_to_gcp:
-          requires:
-            - build_push_image
+      # - build_push_image:
+      #     requires:
+      #       - build_test
+      - deploy_to_gcp
+          # requires:
+          #   - build_push_image
 jobs:
   build_test:
     docker:
@@ -58,7 +58,7 @@ jobs:
             # curl -L https://get.pulumi.com/ | bash -s
             source ~/.bashrc
             sudo pip install --upgrade pip==18.0
-            pip3 install --user --no-cache-dir -r requirements.txt
+            pip install --user --no-cache-dir -r requirements.txt
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - pulumi/update:
