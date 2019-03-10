@@ -143,3 +143,6 @@ package-lock.json
 # Pulumi.*.yaml
 .idea/
 *.iml
+
+#Pipenv
+Pipfile.lock
