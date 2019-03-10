@@ -30,7 +30,7 @@ jobs:
           command: |
             pipenv shell    
             # ~/.local/bin/pytest
-            pytest
+            # pytest
   build_push_image:
     docker:
       - image: circleci/python:3.7.2
