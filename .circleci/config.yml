@@ -55,7 +55,7 @@ jobs:
           name: Generate GCP Credentials
           command: |
             # cd ${HOME}/project/pulumi/gcp/orb-demo/
-            echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > cicd-gcp-creds.json
+            echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > cicd_demo_gcp_creds.json
             # curl -L https://get.pulumi.com/ | bash -s
             source ~/.bashrc
             # sudo pip install --upgrade pip==18.0
