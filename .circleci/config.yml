@@ -44,14 +44,19 @@ jobs:
             docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push $DOCKER_LOGIN/$IMAGE_NAME
-      - run:
-          name: Generate GCP Credentials
-          command: echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/orb-demo/cicd-gcp-creds.json            
+
   deploy_to_gcp:
     docker:
       - image: circleci/python:3.7.2
     steps:
-      - checkout          
+      - checkout
+      - run:
+          name: Generate GCP Credentials
+          command: |
+            cd ${HOME}/project/pulumi/gcp/orb-demo/
+            echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > cicd-gcp-creds.json
+            pip install --user --no-cache-dir -r requirements.txt
+            export pulumi=~/.local/bin/pulumi
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - pulumi/update:
