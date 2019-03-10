@@ -48,7 +48,7 @@ jobs:
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/orb-demo/cicd_demo_gcp_creds.json
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
-     - run:
+      - run:
           name: Install dependecies 
           command: pipenv install pulumi pulumi-gcp         
       - pulumi/update:
