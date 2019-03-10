@@ -50,7 +50,7 @@ jobs:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
           name: Install dependecies 
-          command: sudo -i && pip install pulumi pulumi-gcp && exit
+          command: sudo pip install --upgrade pip==18.0 && pip install pulumi pulumi-gcp
       - pulumi/update:
           stack: dev
           working_directory: ${HOME}/project/pulumi/gcp/orb-demo/
