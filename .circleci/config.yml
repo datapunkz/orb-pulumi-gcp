@@ -53,7 +53,7 @@ jobs:
     steps:
       - checkout          
       - pulumi/login:
-          access_token: ${PULUMI_ACCESS_TOKEN}
+          access-token: ${PULUMI_ACCESS_TOKEN}
       - pulumi/update:
           stack: orb-demo/dev
           working_directory: ${HOME}/project/pulumi/gcp/orb-demo/
