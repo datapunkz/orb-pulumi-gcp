@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            pipenv run ~/.local/bin/pytest
+            pipenv run pytest
             # ~/.local/bin/pytest
             # pytest
   build_push_image:
