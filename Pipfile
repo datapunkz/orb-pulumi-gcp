@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pulumi = "*"
-pulumi-gcp = "*"
 flask = "*"
 pyinstaller = "*"
 pytest = "*"
+pulumi = "*"
+pulumi-gcp = "*"
