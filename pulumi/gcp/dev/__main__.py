@@ -3,7 +3,7 @@ import pulumi
 from pulumi_gcp import storage
 from pulumi_gcp import compute
 
-build_number = os.environ['CIRCLE_BUILD_NUM']
+build_number = os.environ['CIRCLE_BUILD_NUM'] #gets the build number from the host env vars
 
 docker_image = 'ariv3ra/orb-pulumi-gcp:0.1.' + build_number
 
