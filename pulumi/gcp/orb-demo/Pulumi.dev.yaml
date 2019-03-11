@@ -1,5 +1,0 @@
-config:
-  gcp:project: cicd-workshops
-  gcp:credentials: ./cicd_demo_gcp_creds.json
-  gcp:region: us-east1
-  gcp:zone: us-east1-b
