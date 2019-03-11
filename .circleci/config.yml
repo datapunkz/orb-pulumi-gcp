@@ -32,7 +32,7 @@ jobs:
             pipenv install
             pipenv run pyinstaller -F hello_world.py
             echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
-            echo 'export IMAGE_NAME=python-cicd-workshop' >> $BASH_ENV
+            echo 'export IMAGE_NAME=orb-pulumi-gcp' >> $BASH_ENV
             source $BASH_ENV
             docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Generate GCP Credentials
           command: |
-            echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/orb-demo/cicd_demo_gcp_creds.json
+            echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/dev/cicd_demo_gcp_creds.json
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
@@ -53,7 +53,7 @@ jobs:
           command: sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp
       - pulumi/update:
           stack: dev
-          working_directory: ${HOME}/project/pulumi/gcp/orb-demo/
+          working_directory: ${HOME}/project/pulumi/gcp/dev/
 workflows:
   build_test_deploy:
     jobs:
