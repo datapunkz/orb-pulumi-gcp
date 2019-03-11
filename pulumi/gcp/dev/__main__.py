@@ -5,7 +5,7 @@ from pulumi_gcp import compute
 
 build_number = os.environ['CIRCLE_BUILD_NUM']
 
-docker_image = 'ariv3ra/orb-pulumi-gcp:' + build_number
+docker_image = 'ariv3ra/orb-pulumi-gcp:0.1.' + build_number
 
 disk = {
     'initializeParams': {
