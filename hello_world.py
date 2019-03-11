@@ -11,7 +11,6 @@ def generate_html(message):
                 <br>
                 {0}<br>
                 <br>
-                <p>Test the app deploy baby</p>
             </div>
         </body>
         </html>""".format(message)
