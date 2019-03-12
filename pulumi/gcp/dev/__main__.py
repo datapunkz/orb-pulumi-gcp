@@ -32,7 +32,7 @@ firewall = compute.Firewall("firewall", network=network.self_link, allows=[{
 }])
 
 instance = compute.Instance('orb-pulumi-gcp', name='orb-pulumi-gcp', boot_disk=disk, machine_type='g1-small',
-                            network_interfaces=network_interface, allow_stopping_for_update=true, metadata=meta_data)
+                            network_interfaces=network_interface, allow_stopping_for_update=True, metadata=meta_data)
 
 # Export the DNS name of the bucket
 pulumi.export('instance_name', instance.name)
