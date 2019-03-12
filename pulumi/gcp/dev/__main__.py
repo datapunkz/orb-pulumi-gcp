@@ -3,9 +3,9 @@ import pulumi
 from pulumi_gcp import storage
 from pulumi_gcp import compute
 
-build_num = os.environ['CIRCLE_PREVIOUS_BUILD_NUM']
+build_sha1 = os.environ['CIRCLE_SHA1']
 
-docker_image = 'ariv3ra/orb-pulumi-gcp:' + build_num
+docker_image = 'ariv3ra/orb-pulumi-gcp:' + build_sha1
 
 disk = {
     'initializeParams': {
@@ -32,9 +32,10 @@ firewall = compute.Firewall("firewall", network=network.self_link, allows=[{
 }])
 
 instance = compute.Instance('orb-pulumi-gcp', name='orb-pulumi-gcp', boot_disk=disk, machine_type='g1-small',
-                            network_interfaces=network_interface, allow_stopping_for_update=True, metadata=meta_data)
+                            network_interfaces=network_interface, metadata=meta_data)
 
 # Export the DNS name of the bucket
 pulumi.export('instance_name', instance.name)
+pulumi.export('instance_meta_data', instance.metadata)
 pulumi.export('instance_network', instance.network_interfaces)
 pulumi.export('external_ip', addr.address)
