@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   pulumi: pulumi/pulumi@1.0.1
-
 jobs:
   build_test:
     docker:
