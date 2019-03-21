@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Generate GCP Credentials
           command: |
-            echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/dev/cicd_demo_gcp_creds.json
+            echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/compute/cicd_demo_gcp_creds.json
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
@@ -51,7 +51,7 @@ jobs:
           command: sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp
       - pulumi/update:
           stack: dev
-          working_directory: ${HOME}/project/pulumi/gcp/dev/
+          working_directory: ${HOME}/project/pulumi/gcp/compute/
 workflows:
   build_test_deploy:
     jobs:
