@@ -1,5 +1,6 @@
 config:
-  gcp:project: cicd-workshops
+  compute:name: cos
   gcp:credentials: ./cicd_demo_gcp_creds.json
+  gcp:project: cicd-workshops
   gcp:region: us-east1
   gcp:zone: us-east1-b
