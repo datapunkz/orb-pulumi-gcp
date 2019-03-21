@@ -50,7 +50,7 @@ jobs:
           name: Install dependecies 
           command: sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp
       - pulumi/update:
-          stack: compute
+          stack: dev
           working_directory: ${HOME}/project/pulumi/gcp/compute/
 workflows:
   build_test_deploy:
