@@ -10,7 +10,6 @@ pytest = "*"
 pulumi = "*"
 pulumi-gcp = "*"
 pulumi-kubernetes = "*"
-pylint = "*"
 
 [dev-packages]
 pylint = "*"
