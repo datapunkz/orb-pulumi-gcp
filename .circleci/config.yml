@@ -56,10 +56,10 @@ workflows:
   build_test_deploy:
     jobs:
       - build_test
-      - build_push_image:
-          requires:
-            - build_test
-      - deploy_to_gcp:
-          requires:
-          - build_push_image
+      # - build_push_image:
+      #     requires:
+      #       - build_test
+      # - deploy_to_gcp:
+      #     requires:
+      #     - build_push_image
           # - build_test # kill this line once the deploy issue is fixed
