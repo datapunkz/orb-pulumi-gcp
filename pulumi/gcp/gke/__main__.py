@@ -2,9 +2,9 @@ import os
 import pulumi
 import pulumi_kubernetes
 from pulumi import ResourceOptions
+from pulumi_kubernetes.apps.v1 import Deployment
 from pulumi_kubernetes.core.v1 import Namespace, Pod, Service
 from pulumi_gcp import container
-
 
 conf = pulumi.Config('gke')
 gcp_conf = pulumi.Config('gcp')
@@ -14,16 +14,19 @@ gcp_project = gcp_conf.require('project')
 gcp_zone = gcp_conf.require('zone')
 
 app_name = 'cicd-app'
+app_label = {'appClass':app_name}
+cluster_name = app_name
+
 # build_sha1 = os.environ['CIRCLE_SHA1']
 
 # docker_image = 'ariv3ra/orb-pulumi-gcp:' + build_sha1
-docker_image = 'ariv3ra/orb-pulumi-gcp'
 
+docker_image = 'ariv3ra/orb-pulumi-gcp'
 machine_type = 'g1-small'
-cluster_name = 'orb-k8-cluster'
 
 cluster = container.Cluster(
-    cluster_name, initial_node_count=3,
+    cluster_name,
+    initial_node_count=3,
     min_master_version='latest',
     node_version='latest',
     node_config={
@@ -32,7 +35,10 @@ cluster = container.Cluster(
             "https://www.googleapis.com/auth/compute",
             "https://www.googleapis.com/auth/devstorage.read_only",
             "https://www.googleapis.com/auth/logging.write",
-            "https://www.googleapis.com/auth/monitoring"
+            "https://www.googleapis.com/auth/monitoring",
+            "https://www.googleapis.com/auth/service.management.readonly",
+            "https://www.googleapis.com/auth/servicecontrol",
+            "https://www.googleapis.com/auth/trace.append",
         ],
     }
 )
@@ -79,19 +85,63 @@ k8s_config = pulumi.Output.all(gke_masterAuth,gke_endpoint,gke_context).apply(la
 cluster_provider = pulumi_kubernetes.Provider(cluster_name, kubeconfig=k8s_config)
 ns = Namespace(cluster_name, __opts__=ResourceOptions(provider=cluster_provider))
 
-gke_app = Pod(
+gke_deployment = Deployment(
     app_name,
     metadata={
-        "namespace": ns,
+        'namespace': ns,
+        'labels': app_label,
     },
     spec={
-        "containers": [{
-            "image": docker_image,
-            "name": app_name,
-            "ports": [{
-                "container_port": 5000,
-            }],
-        }],
-    }, __opts__=ResourceOptions(provider=cluster_provider))
+        'replicas': 3,
+        'selector':{'matchLabels': app_label},
+        'template':{
+            'metadata':{'labels': app_label},
+            'spec':{
+                'containers':[
+                    {
+                        'name': app_name,
+                        'image': docker_image,
+                        'ports':[{'name': 'port-5000', 'containerPort': 5000}]
+                    }
+                ]
+            }
+        }
+    },
+    __opts__=ResourceOptions(provider=cluster_provider)
+)
+
+deploy_name = gke_deployment
+
+gke_service = Service(
+    app_name,
+    metadata={
+        'namespace': ns,
+        'labels': app_label,
+    },
+    spec={
+        'type': "LoadBalancer",
+        'ports': [{'port': 80, 'targetPort': 5000}],
+        'selector': app_label,
+    },
+    __opts__=ResourceOptions(provider=cluster_provider)
+)
+
+
+
+# gke_app = Pod(
+#     app_name,
+#     metadata={
+#         "namespace": ns,
+#     },
+#     spec={
+#         "containers": [{
+#             "image": docker_image,
+#             "name": app_name,
+#             "ports": [{
+#                 "container_port": 5000,
+#             }],
+#         }],
+#     }, __opts__=ResourceOptions(provider=cluster_provider))
 
 pulumi.export("kubeconfig", k8s_config)
+pulumi.export("Endpoint IP", cluster.endpoint)
