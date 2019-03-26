@@ -17,11 +17,13 @@ app_name = 'cicd-app'
 app_label = {'appClass':app_name}
 cluster_name = app_name
 
-# build_sha1 = os.environ['CIRCLE_SHA1']
+image_tag = ''
+if 'CIRCLE_SHA1' in os.environ:
+    image_tag = os.environ['CIRCLE_SHA1']
+else:
+    image_tag = 'latest'
 
-# docker_image = 'ariv3ra/orb-pulumi-gcp:' + build_sha1
-
-docker_image = 'ariv3ra/orb-pulumi-gcp'
+docker_image = 'ariv3ra/orb-pulumi-gcp:{0}'.format(image_tag)
 machine_type = 'g1-small'
 
 cluster = container.Cluster(
@@ -44,7 +46,6 @@ cluster = container.Cluster(
 )
 
 # Set the Kubeconfig file values here
-
 def generate_k8_config(master_auth, endpoint, context):
     config = '''apiVersion: v1
 clusters:
@@ -101,7 +102,7 @@ gke_deployment = Deployment(
                     {
                         'name': app_name,
                         'image': docker_image,
-                        'ports':[{'name': 'port-5000', 'containerPort': 5000}]
+                        'ports':[{'name': 'port-5000', 'container_port': 5000}]
                     }
                 ]
             }
@@ -120,28 +121,11 @@ gke_service = Service(
     },
     spec={
         'type': "LoadBalancer",
-        'ports': [{'port': 80, 'targetPort': 5000}],
+        'ports': [{'port': 80, 'target_port': 5000}],
         'selector': app_label,
     },
     __opts__=ResourceOptions(provider=cluster_provider)
 )
 
-
-
-# gke_app = Pod(
-#     app_name,
-#     metadata={
-#         "namespace": ns,
-#     },
-#     spec={
-#         "containers": [{
-#             "image": docker_image,
-#             "name": app_name,
-#             "ports": [{
-#                 "container_port": 5000,
-#             }],
-#         }],
-#     }, __opts__=ResourceOptions(provider=cluster_provider))
-
 pulumi.export("kubeconfig", k8s_config)
-pulumi.export("Endpoint IP", cluster.endpoint)
+pulumi.export("app_endpoint_ip", gke_service.status['load_balancer']['ingress'][0]['ip'])
