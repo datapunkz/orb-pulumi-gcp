@@ -24,6 +24,7 @@ else:
     image_tag = 'latest'
 
 docker_image = 'ariv3ra/orb-pulumi-gcp:{0}'.format(image_tag)
+
 machine_type = 'g1-small'
 
 cluster = container.Cluster(
@@ -76,7 +77,6 @@ users:
 
     return config
     
-# cluster.master_auth.apply(lambda m: print(dir(m)))
 gke_masterAuth = cluster.master_auth['clusterCaCertificate']
 gke_endpoint = cluster.endpoint
 gke_context = gcp_project+'_'+gcp_zone+'_'+cluster_name
