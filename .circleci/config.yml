@@ -52,12 +52,14 @@ jobs:
             ./google-cloud-sdk/install.sh  --quiet
             source ${HOME}/project/google-cloud-sdk/path.bash.inc
             gcloud auth activate-service-account --key-file ${GCP_CREDS_FILE}
-            sudo pip install --upgrade pip==18.0 && pip install --user pulumi -r ${HOME}/project/reqs.txt
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
-      # - run:
-      #     name: Install dependecies 
-      #     command: sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp
+      - run:
+          name: Install dependecies 
+          command: |
+            # echo 'export CLOUDSDK_PYTHON=/usr/bin/python2.7' >> ${HOME}/.bashrc
+            # source ~/.bashrc
+            sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp pulumi-kubernetes
       - pulumi/update:
           stack: k8s
           working_directory: ${HOME}/project/pulumi/gcp/gke/
