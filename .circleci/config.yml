@@ -45,14 +45,15 @@ jobs:
       - run:
           name: Install dependecies
           command: |
+            cd ~/
             sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp pulumi-kubernetes
+            curl -o ../gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
+            tar -xzvf ../gcp-cli.tar.gz
             echo 'export "CLOUDSDK_PYTHON"=/usr/bin/python2.7' >> ~/.bashrc
-            source ~/.bashrc
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-            curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
-            tar -xzvf gcp-cli.tar.gz
+            source ~/.bashrc
             ./google-cloud-sdk/install.sh  --quiet
-            echo 'export PATH=$PATH:$HOME/project/google-cloud-sdk/path.bash.inc:' >> ~/.bashrc
+            echo 'source ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
             source ~/.bashrc
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
       - pulumi/update:
