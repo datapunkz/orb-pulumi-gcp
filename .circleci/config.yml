@@ -40,11 +40,14 @@ jobs:
       - image: circleci/python:3.7.2
     steps:
       - checkout
+      - pulumi/login:
+          access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
-          name: Install Google Cloud SDK and Generate GCP Credentials
+          name: Install dependecies
           command: |
-            echo 'export CLOUDSDK_PYTHON=/usr/bin/python2.7' >> ${BASH_ENV}
-            echo 'export GCP_CREDS_FILE=${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json' >> ${BASH_ENV}
+            sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp pulumi-kubernetes
+            echo 'export CLOUDSDK_PYTHON=/usr/bin/python2.7' >> ~/.bashrc
+            echo 'export GCP_CREDS_FILE=${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json' >> ~/.bashrc
             source ${BASH_ENV}
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${GCP_CREDS_FILE}
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
@@ -52,15 +55,6 @@ jobs:
             ./google-cloud-sdk/install.sh  --quiet
             source ${HOME}/project/google-cloud-sdk/path.bash.inc
             gcloud auth activate-service-account --key-file ${GCP_CREDS_FILE}
-      - pulumi/login:
-          access-token: ${PULUMI_ACCESS_TOKEN}
-      - run:
-          name: Install dependecies 
-          command: |
-            echo 'export CLOUDSDK_PYTHON=/usr/bin/python2.7' >> ${HOME}/.bashrc
-            source ~/.bashrc
-            source ${HOME}/project/google-cloud-sdk/path.bash.inc
-            sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp pulumi-kubernetes
       - pulumi/update:
           stack: k8s
           working_directory: ${HOME}/project/pulumi/gcp/gke/
