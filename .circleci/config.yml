@@ -52,7 +52,7 @@ jobs:
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
             ./google-cloud-sdk/install.sh  --quiet
-            echo 'export PATH=$PATH:$HOME/project/google-cloud-sdk/bin/gcloud' >> ~/.bashrc
+            echo 'export PATH=$PATH:$HOME/project/google-cloud-sdk/bin/' >> ~/.bashrc
             source ~/.bashrc
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
       - pulumi/update:
