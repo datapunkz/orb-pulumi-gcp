@@ -50,7 +50,7 @@ jobs:
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
             ./google-cloud-sdk/install.sh  --quiet
-            source ${HOME}/google-cloud-sdk/path.bash.inc
+            source ${HOME}/project/google-cloud-sdk/path.bash.inc
             gcloud auth activate-service-account --key-file ${GCP_CREDS_FILE}
             sudo pip install --upgrade pip==18.0 && pip install --user pulumi -r ${HOME}/project/reqs.txt
       - pulumi/login:
