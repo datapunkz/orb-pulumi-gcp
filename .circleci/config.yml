@@ -57,8 +57,9 @@ jobs:
       - run:
           name: Install dependecies 
           command: |
-            # echo 'export CLOUDSDK_PYTHON=/usr/bin/python2.7' >> ${HOME}/.bashrc
-            # source ~/.bashrc
+            echo 'export CLOUDSDK_PYTHON=/usr/bin/python2.7' >> ${HOME}/.bashrc
+            source ~/.bashrc
+            source ${HOME}/project/google-cloud-sdk/path.bash.inc
             sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp pulumi-kubernetes
       - pulumi/update:
           stack: k8s
@@ -73,4 +74,3 @@ workflows:
       - deploy_to_gcp:
           requires:
           - build_push_image
-          # - build_test # kill this line once the deploy issue is fixed
