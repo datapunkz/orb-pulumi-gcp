@@ -38,6 +38,10 @@ jobs:
   deploy_to_gcp:
     docker:
       - image: circleci/python:3.7.2
+        environment:
+          CLOUDSDK_PYTHON: '/usr/bin/python2.7'
+          GOOGLE_SDK_PATH: '~/google-cloud-sdk'
+          # PATH: '$PATH:~/google-cloud-sdk/bin'
     steps:
       - checkout
       - pulumi/login:
@@ -49,11 +53,8 @@ jobs:
             sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp pulumi-kubernetes
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
-            echo 'export "CLOUDSDK_PYTHON"=/usr/bin/python2.7' >> ~/.bashrc
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-            source ~/.bashrc
             ./google-cloud-sdk/install.sh  --quiet
-            sudo cp ~/google-cloud-sdk/bin/gcloud /usr/bin/
             # echo 'export PATH=$PATH:~/google-cloud-sdk/bin:' >> ~/.bashrc
             # echo 'source ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
             # source ~/.bashrc
@@ -65,9 +66,10 @@ workflows:
   build_test_deploy:
     jobs:
       - build_test
-      - build_push_image:
-          requires:
-            - build_test
+      # - build_push_image:
+      #     requires:
+      #       - build_test
       - deploy_to_gcp:
           requires:
-          - build_push_image
+          # - build_push_image
+          - build_test
