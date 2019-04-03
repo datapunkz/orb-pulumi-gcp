@@ -41,7 +41,7 @@ jobs:
         environment:
           CLOUDSDK_PYTHON: '/usr/bin/python2.7'
           GOOGLE_SDK_PATH: '~/google-cloud-sdk'
-          # PATH: '$PATH:~/google-cloud-sdk/bin'
+          PATH: '$PATH:~/google-cloud-sdk/bin'
     steps:
       - checkout
       - pulumi/login:
@@ -54,7 +54,7 @@ jobs:
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-            ./google-cloud-sdk/install.sh  --quiet
+            ./google-cloud-sdk/install.sh  --quiet 
             # echo 'export PATH=$PATH:~/google-cloud-sdk/bin:' >> ~/.bashrc
             # echo 'source ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
             # source ~/.bashrc
