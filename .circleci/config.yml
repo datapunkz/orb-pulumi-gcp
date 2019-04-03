@@ -53,9 +53,10 @@ jobs:
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
             source ~/.bashrc
             ./google-cloud-sdk/install.sh  --quiet
-            echo 'export PATH=$PATH:~/google-cloud-sdk/bin:' >> ~/.bashrc
-            echo 'source ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
-            source ~/.bashrc
+            sudo cp ~/google-cloud-sdk/bin/gcloud /usr/bin/
+            # echo 'export PATH=$PATH:~/google-cloud-sdk/bin:' >> ~/.bashrc
+            # echo 'source ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
+            # source ~/.bashrc
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
       - pulumi/update:
           stack: k8s
