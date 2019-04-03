@@ -40,8 +40,8 @@ jobs:
       - image: circleci/python:3.7.2
         environment:
           CLOUDSDK_PYTHON: '/usr/bin/python2.7'
-          GOOGLE_SDK_PATH: '~/google-cloud-sdk'
-          PATH: '$PATH:~/google-cloud-sdk/bin'
+          GOOGLE_SDK_PATH: '~/google-cloud-sdk/'
+          # PATH: '$PATH:~/google-cloud-sdk/bin'
     steps:
       - checkout
       - pulumi/login:
@@ -58,6 +58,7 @@ jobs:
             # echo 'export PATH=$PATH:~/google-cloud-sdk/bin:' >> ~/.bashrc
             # echo 'source ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
             # source ~/.bashrc
+            echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV && source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
       - pulumi/update:
           stack: k8s
