@@ -7,17 +7,16 @@ def generate_html(message):
         <html>
         <body>
             <div style='text-align:center;font-size:80px;'>
-                <image width="1200" height="500" src="https://storage.googleapis.com/gweb-cloudblog-publish/original_images/GC_NEXT-Blog-Header_V1.png">
-                <br>
-                {0}
-                <p>Version Number: 0000/p>
+                <image width="800" height="333" src="https://storage.googleapis.com/gweb-cloudblog-publish/original_images/GC_NEXT-Blog-Header_V1.png">
+                <br> {0}
+                <p>Version Number: 0000 </p>
             </div>
         </body>
         </html>""".format(message)
     return html
 
 def greet():
-    greeting = 'Welcome to CI/CD 101 using CircleCI!'
+    greeting = 'Welcome to Google Next 19!'
     return greeting
 
 @app.route('/')
