@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Install Python Dependencies
           command: |
-            pipenv install
+            pipenv install --skip-lock
       - run:
           name: Run Tests
           command: |
@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |       
-            pipenv install
+            pipenv install --skip-lock
             pipenv run pyinstaller -F hello_world.py
             echo 'export TAG=${CIRCLE_SHA1}' >> $BASH_ENV
             echo 'export IMAGE_NAME=orb-pulumi-gcp' >> $BASH_ENV
@@ -37,6 +37,7 @@ jobs:
             docker push $DOCKER_LOGIN/$IMAGE_NAME
   deploy_to_gcp:
     docker:
+      
       - image: circleci/python:3.7.2
         environment:
           CLOUDSDK_PYTHON: '/usr/bin/python2.7'
