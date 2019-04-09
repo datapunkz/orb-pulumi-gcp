@@ -67,6 +67,6 @@ workflows:
       - build_push_image:
           requires:
             - build_test
-      # - deploy_to_gcp:
-      #     requires:
-      #     - build_push_image
+      - deploy_to_gcp:
+          requires:
+          - build_push_image
