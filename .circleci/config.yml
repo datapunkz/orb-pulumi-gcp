@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Install Python Dependencies
           command: |
-            pipenv install
+            pipenv install --skip-lock
       - run:
           name: Run Tests
           command: |
