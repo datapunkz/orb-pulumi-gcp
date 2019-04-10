@@ -29,7 +29,7 @@ machine_type = 'g1-small'
 
 cluster = container.Cluster(
     cluster_name,
-    initial_node_count=3,
+    initial_node_count=8,
     min_master_version='latest',
     node_version='latest',
     node_config={
@@ -90,7 +90,7 @@ gke_deployment = Deployment(
         'labels': app_label,
     },
     spec={
-        'replicas': 3,
+        'replicas': 8,
         'selector':{'matchLabels': app_label},
         'template':{
             'metadata':{'labels': app_label},
