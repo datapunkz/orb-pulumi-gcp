@@ -17,7 +17,7 @@ def generate_html(message):
     return html
 
 def greet():
-    greeting = 'Welcome to Google Next 19!'
+    greeting = 'Welcome to CI/CD 101!!'
     return greeting
 
 @app.route('/')
