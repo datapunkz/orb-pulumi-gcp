@@ -12,7 +12,7 @@ class TestHelloWorld(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_greeting_message(self):
-        greeting = 'Welcome to CI/CD 101!'
+        greeting = 'Welcome to CI/CD'
         self.assertEqual(hello_world.greet(), greeting)
 
 if __name__ == '__main__':
