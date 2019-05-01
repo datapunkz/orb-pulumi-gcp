@@ -8,7 +8,7 @@ def generate_html(message):
         <html>
         <body>
             <div style='text-align:center;font-size:80px;'>
-                <image height="340" width="1200" src="https://user-images.githubusercontent.com/194400/41597205-a57442ea-73c4-11e8-9591-61f5c83c7e66.png">
+                <image height="625" width="2500" src="https://dal05.objectstorage.softlayer.net/v1/AUTH_d0619b05-07fc-49f0-8249-da585ea45ce5/docker/uploads/banner_v1_FDjns4W.png">
                 <br> {0}
                 <p>Version Number: {1}</p>
             </div>
@@ -17,7 +17,7 @@ def generate_html(message):
     return html
 
 def greet():
-    greeting = 'Welcome to CI/CD 101!'
+    greeting = 'Welcome to CI/CD'
     return greeting
 
 @app.route('/')
