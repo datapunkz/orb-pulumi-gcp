@@ -8,7 +8,7 @@ def generate_html(message):
         <html>
         <body>
             <div style='text-align:center;font-size:80px;'>
-                <image height="625" width="2500" src="https://dal05.objectstorage.softlayer.net/v1/AUTH_d0619b05-07fc-49f0-8249-da585ea45ce5/docker/uploads/banner_v1_FDjns4W.png">
+                <image height="338" width="792" src="http://sessionize.com/image?f=3aa1ba56d3f57f411e0dbf7db1c94250,1140,400,False,True,7a-7e26-46f5-b92d-9f6cb59eb283.4a399ee8-9a74-4802-a12b-e344e161820a.png">
                 <br> {0}
                 <p>Version Number: {1}</p>
             </div>
