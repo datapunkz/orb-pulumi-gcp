@@ -3,9 +3,13 @@ import pulumi
 from pulumi_gcp import storage
 from pulumi_gcp import compute
 
-build_sha1 = os.environ['CIRCLE_SHA1']
+image_tag = ''
+if 'CIRCLE_SHA1' in os.environ:
+    image_tag = os.environ['CIRCLE_SHA1']
+else:
+    image_tag = 'latest'
 
-docker_image = 'ariv3ra/orb-pulumi-gcp:' + build_sha1
+docker_image = 'ariv3ra/orb-pulumi-gcp:' + image_tag
 
 disk = {
     'initializeParams': {
