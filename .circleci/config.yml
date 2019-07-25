@@ -70,7 +70,7 @@ jobs:
                 pulumi destroy --yes
                 break
               elif [ "$TIME_OUT" gt 300]; then
-                echo "Process has Timed Out. Elapsed Time: $TIME_OUT"
+                echo "Process has Timed Out. Elapsed Time... $TIME_OUT"
                 exit 1
               else
                 echo "Got $STATUS :( Not done yet..."
