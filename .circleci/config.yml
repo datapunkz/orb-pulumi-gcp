@@ -71,3 +71,6 @@ workflows:
       - deploy_to_gcp:
           requires:
           - build_push_image
+          filters:
+            branches:
+              only: master          
