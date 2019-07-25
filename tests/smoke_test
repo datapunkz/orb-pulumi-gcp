@@ -1,5 +1,6 @@
 #!/bin/bash
 export TIME_OUT=0
+cd ${HOME}/project/pulumi/gcp/gke/
 while true
 do
   STATUS=$(curl -s -o /dev/null -w '%{http_code}' http://$SMOKE)
