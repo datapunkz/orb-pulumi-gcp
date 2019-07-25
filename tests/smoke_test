@@ -1,0 +1,19 @@
+#!/bin/bash
+export TIME_OUT=0
+while true
+do
+  STATUS=$(curl -s -o /dev/null -w '%{http_code}' http://$SMOKE)
+  if [ $STATUS -eq 200 ]; then
+    echo "Got 200! All done!"
+    pulumi destroy --yes
+    break
+  elif [ "$TIME_OUT" gt 300 ]; then
+    echo "Process has Timed Out. Elapsed Time.. $TIME_OUT"
+    pulumi destroy --yes
+    exit 1
+  else
+    echo "Got $STATUS :( Not done yet..."
+    TIME_OUT=$((TIME_OUT+10))
+  fi
+  sleep 10
+done
