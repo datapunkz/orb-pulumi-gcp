@@ -47,7 +47,7 @@ jobs:
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
-          name: Install dependecies
+          name: Install dependencies
           command: |
             cd ~/
             sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp pulumi-kubernetes
@@ -58,9 +58,26 @@ jobs:
             echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
             source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
+            echo 'export TIME_OUT=0' >> $BASH_ENV
       - pulumi/update:
           stack: k8s
           working_directory: ${HOME}/project/pulumi/gcp/gke/
+            while true
+            do
+              STATUS=$(curl -s -o /dev/null -w '%{http_code}' http://$SMOKE)
+              if [ $STATUS -eq 200 ]; then
+                echo "Got 200! All done!"
+                pulumi destroy --yes
+                break
+              elif [ "$TIME_OUT" gt 300]; then
+                echo "Process has Timed Out. Elapsed Time: $TIME_OUT"
+                exit 1
+              else
+                echo "Got $STATUS :( Not done yet..."
+                TIME_OUT=$((TIME_OUT+10))
+              fi
+              sleep 10
+            done
 workflows:
   build_test_deploy:
     jobs:
@@ -73,4 +90,6 @@ workflows:
           - build_push_image
           filters:
             branches:
-              only: master          
+              only:
+              - master
+              - smoke test          
