@@ -50,7 +50,7 @@ jobs:
           name: Install dependencies
           command: |
             cd ~/
-            sudo pip install --upgrade pip==18.0 && pip install --user pulumi pulumi-gcp pulumi-kubernetes
+            sudo pip install --upgrade pip==18.0 && pip install --user -r ../../../reqs.txt
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
@@ -62,22 +62,23 @@ jobs:
       - pulumi/update:
           stack: k8s
           working_directory: ${HOME}/project/pulumi/gcp/gke/
-            while true
-            do
-              STATUS=$(curl -s -o /dev/null -w '%{http_code}' http://$SMOKE)
-              if [ $STATUS -eq 200 ]; then
-                echo "Got 200! All done!"
-                pulumi destroy --yes
-                break
-              elif [ "$TIME_OUT" gt 300]; then
-                echo "Process has Timed Out. Elapsed Time... $TIME_OUT"
-                exit 1
-              else
-                echo "Got $STATUS :( Not done yet..."
-                TIME_OUT=$((TIME_OUT+10))
-              fi
-              sleep 10
-            done
+            # \n
+            # while true
+            # do
+            #   STATUS=$(curl -s -o /dev/null -w '%{http_code}' http://$SMOKE)
+            #   if [ $STATUS -eq 200 ]; then
+            #     echo "Got 200! All done!"
+            #     pulumi destroy --yes
+            #     break
+            #   elif [ "$TIME_OUT" gt 300]; then
+            #     echo "Process has Timed Out. Elapsed Time... $TIME_OUT"
+            #     exit 1
+            #   else
+            #     echo "Got $STATUS :( Not done yet..."
+            #     TIME_OUT=$((TIME_OUT+10))
+            #   fi
+            #   sleep 10
+            # done
 workflows:
   build_test_deploy:
     jobs:
