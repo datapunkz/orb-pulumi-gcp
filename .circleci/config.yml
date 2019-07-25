@@ -58,11 +58,10 @@ jobs:
             echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
             source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-            echo 'export TIME_OUT=0' >> $BASH_ENV
-      - persist_to_workspace:
-        root: ../
-        path:
-          - google-cloud-sdk
+      # - persist_to_workspace:
+      #   root: ../
+      #   path:
+      #     - google-cloud-sdk
       - pulumi/update:
           stack: k8s
           working_directory: ${HOME}/project/pulumi/gcp/gke/
@@ -74,16 +73,19 @@ jobs:
           GOOGLE_SDK_PATH: '~/google-cloud-sdk/'
     steps:
       - checkout
-      - attach_workspace:
-          at: ../
+      # - attach_workspace:
+      #     at: ../
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
           name: Install dependencies
           command: |
-            sudo pip install --upgrade pip==18.0 && pip install --user -r reqs.txt
             cd ~/
+            sudo pip install --upgrade pip==18.0 && pip install --user -r project/reqs.txt
+            curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
+            tar -xzvf gcp-cli.tar.gz
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
+            ./google-cloud-sdk/install.sh  --quiet
             echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
             source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
