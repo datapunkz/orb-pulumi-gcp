@@ -90,7 +90,8 @@ jobs:
             source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
             echo 'Initializing Smoke Tests on the GKE Cluster'
-            sh ~/tests/smoke_test
+            cd  ~/project/tests/
+            ./smoke_test
             echo "GKE Cluster Tested & Destroyed"
 workflows:
   build_test_deploy:
