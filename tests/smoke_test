@@ -1,16 +1,16 @@
 #!/bin/bash
 export TIME_OUT=0
-cd ${HOME}/project/pulumi/gcp/gke/
+# cd ${HOME}/project/pulumi/gcp/gke/
 while true
 do
   STATUS=$(curl -s -o /dev/null -w '%{http_code}' http://$SMOKE)
   if [ $STATUS -eq 200 ]; then
     echo "Got 200! All done!"
-    pulumi destroy --yes
+    pulumi destroy --stack k8s --yes
     break
   elif [[ $TIME_OUT -gt 300 ]]; then
     echo "Process has Timed Out. Elapsed Time.. $TIME_OUT"
-    pulumi destroy --yes
+    pulumi destroy --stack k8s --yes
     exit 1
   else
     echo "Got $STATUS :( Not done yet..."
