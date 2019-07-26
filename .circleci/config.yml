@@ -65,6 +65,15 @@ jobs:
       - pulumi/update:
           stack: k8s
           working_directory: ${HOME}/project/pulumi/gcp/gke/
+      - run:
+          name: Run Smoke Test
+          command: |
+            cd ${HOME}/project/pulumi/gcp/gke
+            echo 'export SMOKE=$(pulumi stack --stack k8s output app_endpoint_ip)' >> $BASH_ENV
+            echo 'Initializing Smoke Tests on the GKE Cluster'
+            sh  ~/project/tests/smoke_test
+            echo "GKE Cluster Tested & Destroyed"
+
   smoke_test_k8s:
     docker:
       - image: circleci/python:3.7.2
@@ -89,13 +98,7 @@ jobs:
             echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
             source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-            cd ${HOME}/project/pulumi/gcp/gke
-            pulumi refresh
-            echo 'export SMOKE=$(pulumi stack output app_endpoint_ip)' >> $BASH_ENV
-            echo 'Initializing Smoke Tests on the GKE Cluster'
-            cd  ~/project/tests/
-            ./smoke_test
-            echo "GKE Cluster Tested & Destroyed"
+
 workflows:
   build_test_deploy:
     jobs:
