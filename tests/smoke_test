@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eo pipefail
 
 . tests/smoke.sh
 
@@ -15,15 +15,16 @@ do
   if [ $STATUS -eq 200 ]; then
     smoke_url_ok $SMOKE_URL
     smoke_assert_body "Welcome to CI/CD"
+    smoke_assert_body "Version Number:"
     smoke_report
-    sleep 60
+    echo "\n\n"
     echo 'Smoke Tests Successfully Completed.'
     echo 'Terminating the Kubernetes Cluster in 60 second...'
     sleep 60
     pulumi destroy --stack $PULUMI_STACK --cwd $PULUMI_CWD --yes
     break
   elif [[ $TIME_OUT_COUNT -gt $TIME_OUT ]]; then
-    echo "Process has Timedout! Elapsed Timeout Count.. $TIME_OUT_COUNT "
+    echo "Process has Timed out! Elapsed Timeout Count.. $TIME_OUT_COUNT"
     pulumi destroy --stack $PULUMI_STACK --cwd $PULUMI_CWD --yes
     exit 1
   else
