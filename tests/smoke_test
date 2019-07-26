@@ -16,7 +16,11 @@ do
     smoke_url_ok $SMOKE_URL
     smoke_assert_body "Welcome to CI/CD"
     smoke_report
-    #pulumi destroy --stack $PULUMI_STACK --cwd $PULUMI_CWD --yes
+    sleep 60
+    echo 'Smoke Tests Successfully Completed.'
+    echo 'Terminating the Kubernetes Cluster in 60 second...'
+    sleep 60
+    pulumi destroy --stack $PULUMI_STACK --cwd $PULUMI_CWD --yes
     break
   elif [[ $TIME_OUT_COUNT -gt $TIME_OUT ]]; then
     echo "Process has Timedout! Elapsed Timeout Count.. $TIME_OUT_COUNT "
