@@ -62,7 +62,7 @@ jobs:
           stack: k8s
           working_directory: ${HOME}/project/pulumi/gcp/gke/
       - run:
-          name: Run Smoke Test
+          name: Run Smoke Test against GKE
           command: |
             # # cd ${HOME}/project/pulumi/gcp/gke
             # # echo 'export SMOKE=$(pulumi stack --stack k8s output app_endpoint_ip)' >> $BASH_ENV
