@@ -8,7 +8,7 @@ do
     echo "Got 200! All done!"
     pulumi destroy --yes
     break
-  elif [ "$TIME_OUT" gt 300 ]; then
+  elif [[ $TIME_OUT -gt 300 ]]; then
     echo "Process has Timed Out. Elapsed Time.. $TIME_OUT"
     pulumi destroy --yes
     exit 1
