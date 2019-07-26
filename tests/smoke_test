@@ -1,11 +1,16 @@
 #!/bin/bash
+
+. smoke.sh
+
 export TIME_OUT=0
-# cd ${HOME}/project/pulumi/gcp/gke/
+cd ${HOME}/project/pulumi/gcp/gke/
 while true
 do
   STATUS=$(curl -s -o /dev/null -w '%{http_code}' http://$SMOKE)
   if [ $STATUS -eq 200 ]; then
-    echo "Got 200! All done!"
+    smoke_url_ok "http://$SMOKE"
+    smoke_assert_body "Welcome to CI/CD"
+    smoke_report
     pulumi destroy --stack k8s --yes
     break
   elif [[ $TIME_OUT -gt 300 ]]; then
@@ -13,7 +18,7 @@ do
     pulumi destroy --stack k8s --yes
     exit 1
   else
-    echo "Got $STATUS :( Not done yet..."
+    echo "Checking Status... $TIME_OUT elapsed"
     TIME_OUT=$((TIME_OUT+10))
   fi
   sleep 10
