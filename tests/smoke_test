@@ -1,4 +1,4 @@
-#!/bin/bash -eo pipefail
+#!/bin/bash
 
 . tests/smoke.sh
 
