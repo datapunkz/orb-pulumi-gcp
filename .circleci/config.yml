@@ -70,35 +70,10 @@ jobs:
           command: |
             cd ${HOME}/project/pulumi/gcp/gke
             echo 'export SMOKE=$(pulumi stack --stack k8s output app_endpoint_ip)' >> $BASH_ENV
+            source $BASH_ENV
             echo 'Initializing Smoke Tests on the GKE Cluster'
             sh  ~/project/tests/smoke_test
             echo "GKE Cluster Tested & Destroyed"
-
-  smoke_test_k8s:
-    docker:
-      - image: circleci/python:3.7.2
-        environment:
-          CLOUDSDK_PYTHON: '/usr/bin/python2.7'
-          GOOGLE_SDK_PATH: '~/google-cloud-sdk/'
-    steps:
-      - checkout
-      # - attach_workspace:
-      #     at: ../
-      - pulumi/login:
-          access-token: ${PULUMI_ACCESS_TOKEN}
-      - run:
-          name: Run Smoke Test on GKE
-          command: |
-            cd ~/
-            sudo pip install --upgrade pip==18.0 && pip install --user -r project/reqs.txt
-            curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
-            tar -xzvf gcp-cli.tar.gz
-            echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-            ./google-cloud-sdk/install.sh  --quiet
-            echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
-            source $BASH_ENV
-            gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-
 workflows:
   build_test_deploy:
     jobs:
@@ -109,9 +84,6 @@ workflows:
       - deploy_to_gcp:
           requires:
           - build_push_image
-      - smoke_test_k8s:
-          requires:
-            - deploy_to_gcp
           # filters:
           #   branches:
           #     only:
