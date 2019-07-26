@@ -78,7 +78,7 @@ jobs:
       - pulumi/login:
           access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
-          name: Install dependencies
+          name: Run Smoke Test on GKE
           command: |
             cd ~/
             sudo pip install --upgrade pip==18.0 && pip install --user -r project/reqs.txt
@@ -89,6 +89,9 @@ jobs:
             echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
             source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
+            cd ${HOME}/project/pulumi/gcp/gke
+            pulumi refresh
+            echo 'export SMOKE=$(pulumi stack output app_endpoint_ip)' >> $BASH_ENV
             echo 'Initializing Smoke Tests on the GKE Cluster'
             cd  ~/project/tests/
             ./smoke_test
