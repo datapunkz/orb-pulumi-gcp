@@ -37,7 +37,6 @@ jobs:
             docker push $DOCKER_LOGIN/$IMAGE_NAME
   deploy_to_gcp:
     docker:
-      
       - image: circleci/python:3.7.2
         environment:
           CLOUDSDK_PYTHON: '/usr/bin/python2.7'
