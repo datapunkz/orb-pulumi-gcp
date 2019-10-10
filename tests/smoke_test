@@ -20,7 +20,7 @@ do
     echo "\n\n"
     echo 'Smoke Tests Successfully Completed.'
     echo 'Terminating the Kubernetes Cluster in 60 second...'
-    sleep 180
+    sleep 120
     pulumi destroy --stack $PULUMI_STACK --cwd $PULUMI_CWD --yes
     break
   elif [[ $TIME_OUT_COUNT -gt $TIME_OUT ]]; then
