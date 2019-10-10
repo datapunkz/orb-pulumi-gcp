@@ -1,7 +1,7 @@
 flask 
 pyinstaller 
 pytest 
-pulumi 
-pulumi-gcp 
-pulumi-kubernetes 
-pylint 
+pylint
+pulumi==0.17.23
+pulumi-gcp==0.18.13
+pulumi-kubernetes==0.25.2
