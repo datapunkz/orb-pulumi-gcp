@@ -1,0 +1,7 @@
+flask == 1.0.0
+pyinstaller == 3.5
+pytest == 5.2.1
+pylint == 2.4.2
+pulumi==0.17.23
+pulumi-gcp==0.18.13
+pulumi-kubernetes==0.25.2

@@ -4,41 +4,38 @@ orbs:
 jobs:
   build_test:
     docker:
-      - image: circleci/python:3.7.2
-        environment:
-          PIPENV_VENV_IN_PROJECT: 'true'
+      - image: circleci/python:3.7.4
     steps:
       - checkout
       - run:
           name: Install Python Dependencies
           command: |
-            pipenv install --skip-lock
+            echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
+            pip install --user -r requirements.txt
       - run:
           name: Run Tests
           command: |
-            pipenv run pytest
+            pytest
   build_push_image:
     docker:
-      - image: circleci/python:3.7.2
+      - image: circleci/python:3.7.4
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
       - run:
           name: Build and push Docker image
-          command: |       
-            pipenv install --skip-lock
-            pipenv run pyinstaller -F hello_world.py
+          command: |
             echo 'export TAG=${CIRCLE_SHA1}' >> $BASH_ENV
             echo 'export IMAGE_NAME=orb-pulumi-gcp' >> $BASH_ENV
+            echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV
             source $BASH_ENV
+            pip install --user -r requirements.txt
+            pyinstaller -F hello_world.py
             docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push $DOCKER_LOGIN/$IMAGE_NAME
   deploy_to_gcp:
-  
     docker:
-      - image: circleci/python:3.7.2
+      - image: circleci/python:3.7.4
         environment:
           CLOUDSDK_PYTHON: '/usr/bin/python2.7'
           GOOGLE_SDK_PATH: '~/google-cloud-sdk/'
@@ -50,23 +47,16 @@ jobs:
           name: Install dependencies
           command: |
             cd ~/
-            sudo pip install --upgrade pip==18.0 && pip install --user -r project/reqs.txt
+            sudo pip install --upgrade pip==18.0 && pip install --user -r project/requirements.txt
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
             ./google-cloud-sdk/install.sh  --quiet
-            echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
-            source $BASH_ENV
+            echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV && source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
       - pulumi/update:
           stack: k8s
           working_directory: ${HOME}/project/pulumi/gcp/gke/
-      - run:
-          name: Run Smoke Test against GKE
-          command: |
-            echo 'Initializing Smoke Tests on the GKE Cluster'
-            ./tests/smoke_test
-            echo "GKE Cluster Tested & Destroyed"
 workflows:
   build_test_deploy:
     jobs:
