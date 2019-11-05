@@ -1,7 +1,0 @@
-flask 
-pyinstaller 
-pytest 
-pylint
-pulumi==0.17.23
-pulumi-gcp==0.18.13
-pulumi-kubernetes==0.25.2
