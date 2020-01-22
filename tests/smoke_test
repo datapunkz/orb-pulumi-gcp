@@ -19,8 +19,8 @@ do
     smoke_report
     echo "\n\n"
     echo 'Smoke Tests Successfully Completed.'
-    echo 'Terminating the Kubernetes Cluster in 60 second...'
-    sleep 120
+    echo 'Terminating the Kubernetes Cluster in 300 second...'
+    sleep 300
     pulumi destroy --stack $PULUMI_STACK --cwd $PULUMI_CWD --yes
     break
   elif [[ $TIME_OUT_COUNT -gt $TIME_OUT ]]; then
