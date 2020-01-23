@@ -28,6 +28,7 @@ jobs:
           name: Build and push Docker image
           command: |       
             pipenv install --skip-lock
+            pipenv run pip install --upgrade 'setuptools<45.0.0'
             pipenv run pyinstaller -F hello_world.py
             echo 'export TAG=${CIRCLE_SHA1}' >> $BASH_ENV
             echo 'export IMAGE_NAME=orb-pulumi-gcp' >> $BASH_ENV
