@@ -51,7 +51,7 @@ jobs:
           name: Install dependencies
           command: |
             cd ~/
-            sudo pip install --upgrade pip==18.0 && pip install --user -r project/requirements.txt
+            sudo pip install --upgrade pip==18.0 && pip install --user -r project/requirements.txt && pip install --user --upgrade six
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
