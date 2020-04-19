@@ -4,7 +4,7 @@ orbs:
 jobs:
   build_test:
     docker:
-      - image: circleci/python:3.7.4
+      - image: circleci/python:3.8.1
         environment:
           PIPENV_VENV_IN_PROJECT: 'true'
     steps:
@@ -19,7 +19,7 @@ jobs:
             pipenv run pytest
   build_push_image:
     docker:
-      - image: circleci/python:3.7.4
+      - image: circleci/python:3.8.1
     steps:
       - checkout
       - setup_remote_docker:
@@ -39,7 +39,7 @@ jobs:
   deploy_to_gcp:
   
     docker:
-      - image: circleci/python:3.7.4
+      - image: circleci/python:3.8.1
         environment:
           CLOUDSDK_PYTHON: '/usr/bin/python2.7'
           GOOGLE_SDK_PATH: '~/google-cloud-sdk/'
@@ -51,7 +51,8 @@ jobs:
           name: Install dependencies
           command: |
             cd ~/
-            sudo pip install --upgrade pip==18.0 && pip install --user -r project/requirements.txt && pip install --user --upgrade six
+            # sudo pip install --upgrade pip==18.0 && pip install --user -r project/requirements.txt && pip install --user --upgrade six
+            sudo pip install --user -r project/requirements.txt
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
             echo ${GOOGLE_CLOUD_KEYS} | base64 --decode --ignore-garbage > ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
@@ -59,22 +60,22 @@ jobs:
             echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
             source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-      - pulumi/update:
-          stack: k8s
-          working_directory: ${HOME}/project/pulumi/gcp/gke/
-      - run:
-          name: Run Smoke Test against GKE
-          command: |
-            echo 'Initializing Smoke Tests on the GKE Cluster'
-            ./tests/smoke_test
-            echo "GKE Cluster Tested & Destroyed"
+      # - pulumi/update:
+      #     stack: k8s
+      #     working_directory: ${HOME}/project/pulumi/gcp/gke/
+      # - run:
+      #     name: Run Smoke Test against GKE
+      #     command: |
+      #       echo 'Initializing Smoke Tests on the GKE Cluster'
+      #       ./tests/smoke_test
+      #       echo "GKE Cluster Tested & Destroyed"
 workflows:
   build_test_deploy:
     jobs:
-      - build_test
-      - build_push_image:
-          requires:
-            - build_test
+      # - build_test
+      # - build_push_image:
+      #     requires:
+      #       - build_test
       - deploy_to_gcp:
-          requires:
-          - build_push_image
+          # requires:
+          # - build_push_image
