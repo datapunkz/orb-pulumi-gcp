@@ -46,7 +46,7 @@ jobs:
     steps:
       - checkout
       - pulumi/login:
-          version: 2.0
+          version: "2.0.0"
           access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
           name: Install dependencies
