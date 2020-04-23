@@ -67,7 +67,7 @@ jobs:
       - run:
           name: Run Smoke Test against GKE
           command: |
-             pulumi --stack k8s --cwd ${HOME}/project/pulumi/gcp/gke/ --skip-preview false --yes
+            pulumi --stack k8s --cwd ${HOME}/project/pulumi/gcp/gke/ --skip-preview false --yes
             echo 'Initializing Smoke Tests on the GKE Cluster'
             ./tests/smoke_test
             echo "GKE Cluster Tested & Destroyed"
