@@ -60,13 +60,14 @@ jobs:
             echo 'export PATH=$PATH:~/google-cloud-sdk/bin' >> $BASH_ENV
             source $BASH_ENV
             gcloud auth activate-service-account --key-file ${HOME}/project/pulumi/gcp/gke/cicd_demo_gcp_creds.json
-            pulumi --stack k8s --cwd ${HOME}/project/pulumi/gcp/gke/ --skip-preview false --yes
+           
       # - pulumi/update:
       #     stack: k8s
       #     working_directory: ${HOME}/project/pulumi/gcp/gke/
       - run:
           name: Run Smoke Test against GKE
           command: |
+             pulumi --stack k8s --cwd ${HOME}/project/pulumi/gcp/gke/ --skip-preview false --yes
             echo 'Initializing Smoke Tests on the GKE Cluster'
             ./tests/smoke_test
             echo "GKE Cluster Tested & Destroyed"
