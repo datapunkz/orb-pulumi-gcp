@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  pulumi: pulumi/pulumi@1.2.0
+  pulumi: pulumi/pulumi@2.0.0
 jobs:
   build_test:
     docker:
@@ -46,13 +46,12 @@ jobs:
     steps:
       - checkout
       - pulumi/login:
-          version: 1.14.1
+          version: 2.0
           access-token: ${PULUMI_ACCESS_TOKEN}
       - run:
           name: Install dependencies
           command: |
             cd ~/
-            # sudo pip install --upgrade pip==18.0 && pip install --user -r project/requirements.txt && pip install --user --upgrade six
             pip install --user -r project/requirements.txt
             curl -o gcp-cli.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
             tar -xzvf gcp-cli.tar.gz
