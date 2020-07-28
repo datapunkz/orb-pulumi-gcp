@@ -72,7 +72,7 @@ workflows:
   build_test_deploy:
     jobs:
       - build_test
-      - build_push_image:
+      - build_push_image
       - deploy_to_gcp:
           requires:
           - build_test
