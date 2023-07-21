@@ -1,5 +1,5 @@
 flask == 1.0.0
-pyinstaller == 3.5
+pyinstaller == 3.6
 pytest == 5.2.1
 pylint == 2.4.2
 pulumi==0.17.23
